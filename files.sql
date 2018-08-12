@@ -1,0 +1,1 @@
+DELETE FROM `visitantes` WHERE `visitantes` 

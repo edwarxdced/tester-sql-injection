@@ -1,0 +1,24 @@
+**************Busqueda de tamper a usar en sqlmap****************
+
+cd /usr/share/sqlmap
+ls
+cd tamper/
+ls
+apostrophemask.py         commalesslimit.py              ifnull2ifisnull.py            percentage.py       space2morecomment.py   symboliclogical.py
+apostrophemask.pyc        commalesslimit.pyc             ifnull2ifisnull.pyc           percentage.pyc      space2morecomment.pyc  symboliclogical.pyc
+apostrophenullencode.py   commalessmid.py                informationschemacomment.py   plus2concat.py      space2morehash.py      unionalltounion.py
+apostrophenullencode.pyc  commalessmid.pyc               informationschemacomment.pyc  plus2concat.pyc     space2morehash.pyc     unionalltounion.pyc
+appendnullbyte.py         commentbeforeparentheses.py    __init__.py                   plus2fnconcat.py    space2mssqlblank.py    unmagicquotes.py
+appendnullbyte.pyc        commentbeforeparentheses.pyc   __init__.pyc                  plus2fnconcat.pyc   space2mssqlblank.pyc   unmagicquotes.pyc
+base64encode.py           concat2concatws.py             lowercase.py                  randomcase.py       space2mssqlhash.py     uppercase.py
+base64encode.pyc          concat2concatws.pyc            lowercase.pyc                 randomcase.pyc      space2mssqlhash.pyc    uppercase.pyc
+between.py                equaltolike.py                 modsecurityversioned.py       randomcomments.py   space2mysqlblank.py    varnish.py
+between.pyc               equaltolike.pyc                modsecurityversioned.pyc      randomcomments.pyc  space2mysqlblank.pyc   varnish.pyc
+bluecoat.py               escapequotes.py                modsecurityzeroversioned.py   securesphere.py     space2mysqldash.py     versionedkeywords.py
+bluecoat.pyc              escapequotes.pyc               modsecurityzeroversioned.pyc  securesphere.pyc    space2mysqldash.pyc    versionedkeywords.pyc
+chardoubleencode.py       greatest.py                    multiplespaces.py             space2comment.py    space2plus.py          versionedmorekeywords.py
+chardoubleencode.pyc      greatest.pyc                   multiplespaces.pyc            space2comment.pyc   space2plus.pyc         versionedmorekeywords.pyc
+charencode.py             halfversionedmorekeywords.py   nonrecursivereplacement.py    space2dash.py       space2randomblank.py   xforwardedfor.py
+charencode.pyc            halfversionedmorekeywords.pyc  nonrecursivereplacement.pyc   space2dash.pyc      space2randomblank.pyc  xforwardedfor.pyc
+charunicodeencode.py      htmlencode.py                  overlongutf8.py               space2hash.py       sp_password.py
+charunicodeencode.pyc     htmlencode.pyc                 overlongutf8.pyc              space2hash.pyc      sp_password.pyc

